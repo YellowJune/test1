@@ -1,0 +1,44 @@
+name: hallucination-x-macos
+
+on:
+  push:
+    branches: [hallucination-x-bench]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qwen05b-macos:
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fetch benchmark harness
+        run: |
+          mkdir -p benchmark results
+          curl -L --fail https://raw.githubusercontent.com/YellowJune/github-bbp-sandbox/hallucination-x-bench/benchmark/hallucination_bench.py -o benchmark/hallucination_bench.py
+          curl -L --fail https://raw.githubusercontent.com/YellowJune/github-bbp-sandbox/hallucination-x-bench/benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json -o benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json
+      - name: Install inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch
+          python -m pip install "transformers>=4.48,<5" sentencepiece safetensors accelerate
+      - name: Run paired benchmark
+        run: |
+          python benchmark/hallucination_bench.py \
+            --model Qwen/Qwen2.5-0.5B-Instruct \
+            --omega benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json \
+            --out results/qwen2.5-0.5b-macos.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hallucination-x-qwen-macos
+          path: results/
+          if-no-files-found: warn
