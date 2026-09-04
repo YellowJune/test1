@@ -1,0 +1,41 @@
+name: hallucination-x-windows
+
+on:
+  push:
+    branches: [hallucination-x-bench]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smollm135m-windows:
+    runs-on: windows-latest
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fetch benchmark harness
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path benchmark,results | Out-Null
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YellowJune/github-bbp-sandbox/hallucination-x-bench/benchmark/hallucination_bench.py" -OutFile "benchmark/hallucination_bench.py"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YellowJune/github-bbp-sandbox/hallucination-x-bench/benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json" -OutFile "benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json"
+      - name: Install inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch transformers sentencepiece safetensors accelerate
+      - name: Run SmolLM 135M paired benchmark
+        run: |
+          python benchmark/hallucination_bench.py --model HuggingFaceTB/SmolLM2-135M-Instruct --omega benchmark/OMEGA_HALLUCINATION_X_v3.0_MAX.json --out results/smollm2-135m.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hallucination-x-windows-smollm135m
+          path: results/
+          if-no-files-found: warn
