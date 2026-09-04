@@ -1,8 +1,6 @@
 name: hallucination-x-fast
 
 on:
-  push:
-    branches: [hallucination-x-bench]
   workflow_dispatch:
 
 permissions:
