@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#09111f" />
+  <meta name="description" content="공전·행성 중력렌즈·항성/행성 차폐를 실시간으로 조절하는 미세중력렌즈 시뮬레이터" />
+  <title>MicroLens Studio — 미세중력렌즈 인터랙티브 실험실</title>
+  <style>
+:root{color-scheme:dark;--bg:#08111e;--panel:#101c2c;--line:#213047;--muted:#8294ac;--text:#ebf3ff;--teal:#46d9cd;--cyan:#8bd7ff;--gold:#f8bf72;--font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 55% 30% at 60% -12%,#12304a77,transparent),var(--bg);color:var(--text);font:14px/1.5 var(--font);letter-spacing:-.015em}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--teal);outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.4}.app-shell{max-width:1640px;margin:auto;padding:0 30px}.masthead{min-height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #223146}.brand{display:flex;gap:12px;align-items:center}.brand-icon{position:relative;width:39px;height:39px;border:1px solid #43d8c7;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px #31e1bb22}.brand-icon:before{content:"";display:block;position:absolute;width:32px;height:12px;border:1px solid var(--teal);border-radius:50%;transform:rotate(-34deg)}.brand-icon span{height:12px;width:12px;border-radius:50%;background:#f5f2d7;box-shadow:0 0 16px #f1edc8}.brand strong{font-size:16px;letter-spacing:.13em}.brand-accent{color:var(--teal)}.brand small{display:block;font-size:9px;letter-spacing:.2em;color:#8c9db7}.header-controls{display:flex;align-items:center;gap:15px}.live-text{font-weight:700;color:#8fa6b7;letter-spacing:.12em;font-size:10px}.sim-dot{height:7px;width:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 11px var(--teal)}.ghost-button,.small-button,.text-button,.transport-icon{background:transparent;color:#becbdd;border:1px solid #34445c;border-radius:8px;padding:9px 14px}.ghost-button:hover,.small-button:hover,.transport-icon:hover{border-color:var(--teal);color:white}.page-heading{padding:43px 0 28px}.eyebrow,.kicker{color:var(--teal);font-size:10px;letter-spacing:.19em;font-weight:800}.eyebrow{display:flex;align-items:center;gap:14px}.heading-line{width:45px;height:1px;background:#3b5970}.page-heading h1{font-size:clamp(26px,3.3vw,43px);letter-spacing:-.048em;font-weight:760;line-height:1.2;margin:13px 0 12px}.page-heading em{font-style:normal;color:var(--teal)}.page-heading p{margin:0;max-width:880px;color:#a0b1c7;font-size:14px}.presets{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:21px}.presets-title{font-size:10px;font-weight:750;letter-spacing:.15em;color:#7f8fa6;margin-right:10px}.preset{background:#101c2b;border:1px solid #2b394c;color:#b2c0d5;border-radius:8px;padding:10px 15px;font-weight:600;transition:.15s}.preset.active,.preset:hover{border-color:#4dcfc4;background:#174044a6;color:#d0fffa}.workspace{display:grid;grid-template-columns:minmax(0,1.74fr) minmax(340px,.87fr);gap:18px;align-items:start}.viz-column,.controls-column{min-width:0;display:flex;flex-direction:column;gap:18px}.panel{background:linear-gradient(147deg,#132137 0%,#0f1a2a 88%);border:1px solid #25344a;border-radius:13px;overflow:hidden;box-shadow:0 8px 30px #00000019}.panel-heading{padding:23px 25px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.panel-heading h2,.controls-title h2,.metrics-panel h2{font-size:18px;font-weight:740;line-height:1.35;letter-spacing:-.025em;margin:6px 0 3px}.panel-heading p{color:#8194ac;margin:0;font-size:11px}.panel-info{display:flex;gap:13px;flex-wrap:wrap;padding-top:12px}.tiny-legend{display:inline-flex;align-items:center;gap:6px;color:#8b9db5;font-size:10px}.tiny-legend i{width:8px;height:8px;border-radius:50%}.legend-source{background:#cddcff}.legend-lens{background:#ffbf6b}.legend-planet{background:#4cdfd2}.canvas-wrap,.chart-wrap{position:relative}.sky-wrap{height:390px;touch-action:none}.sky-wrap canvas,.chart-wrap canvas{width:100%;height:100%;display:block}.sky-overlay{position:absolute;z-index:2;pointer-events:none}.sky-overlay-left{top:22px;left:26px}.mini-label{font-size:10px;letter-spacing:.1em;color:#7e91aa;display:block;margin-bottom:1px}.sky-overlay-left strong{font-size:26px;font-variant-numeric:tabular-nums;letter-spacing:-.04em}.sky-overlay-left small{font-size:12px;color:#8297af}.sky-overlay-right{right:24px;top:21px;display:flex;flex-direction:column;gap:3px;color:#657d94;font-size:10px;text-align:right}.sky-bottom{border-top:1px solid #213147;padding:14px 25px;display:flex;justify-content:space-between;gap:14px;color:#7d93ac;font-size:11px}.sky-bottom b{color:#c0d0e0}.sky-bottom #skyHint{white-space:nowrap}.chart-header{align-items:center}.chart-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.switch-label{display:flex;align-items:center;gap:7px;font-size:11px;color:#9aadc3;white-space:nowrap;cursor:pointer}.switch-label input{position:absolute;opacity:0}.switch-track{height:15px;width:27px;border-radius:20px;background:#3a4a60;position:relative;transition:.2s}.switch-track:after{content:"";position:absolute;top:3px;left:3px;height:9px;width:9px;border-radius:50%;background:#c3cedb;transition:.2s}.switch-label input:checked+.switch-track{background:#23867f}.switch-label input:checked+.switch-track:after{transform:translateX(12px);background:white}.small-button{padding:7px 10px;font-size:11px}.chart-legend{display:flex;gap:15px;flex-wrap:wrap;padding:20px 25px 0;color:#879bb2;font-size:11px}.chart-legend span{display:flex;align-items:center;gap:6px}.chart-legend i{height:3px;width:17px;border-radius:2px}.chart-wrap{height:320px;margin:4px 5px 0}.chart-tooltip{position:absolute;z-index:5;pointer-events:none;padding:9px 12px;background:#081421ed;border:1px solid #527185;border-radius:7px;font-size:11px;white-space:nowrap;line-height:1.75;box-shadow:0 8px 20px #0005}.scrub-row{display:flex;align-items:center;gap:12px;margin:0 25px 10px;color:#7890a8;font-size:11px}.scrub-row input{flex:1;min-width:0;accent-color:var(--teal);height:16px;cursor:pointer}.transport{display:flex;align-items:center;gap:12px;border-top:1px solid #25334b;padding:14px 24px}.play-btn{height:39px;width:39px;display:grid;place-items:center;border-radius:8px;border:0;background:var(--teal);color:#08202b;font-weight:800;font-size:17px}.play-btn:hover{filter:brightness(1.17)}.transport-icon{padding:7px 13px;font-size:19px}.transport-time{display:flex;flex-direction:column;margin-left:7px}.transport-time span,.speed-area label{font-size:10px;color:#8193ac}.transport-time b{font-size:15px;color:white;font-variant-numeric:tabular-nums}.speed-area{margin-left:auto;display:flex;align-items:center;gap:10px}.speed-area select{background:#13263c;color:#e5effe;border:1px solid #31445b;border-radius:7px;padding:8px 10px}.notes-panel{border:1px solid #24433f;background:#10282b9e;border-radius:10px;padding:17px 21px;color:#9eb5b6;font-size:11px;line-height:1.8}.notes-panel strong{color:#9adfd6;font-size:12px}.notes-panel p{margin:5px 0 0}.controls-title{display:flex;justify-content:space-between;align-items:center;padding:23px 22px 7px}.controls-title h2{margin-top:5px}.text-button{border:0;padding:6px;font-size:11px}.text-button:hover{color:var(--teal)}.control-section{padding:18px 22px;border-top:1px solid #233249}.control-section-title{display:flex;align-items:center;gap:10px;margin-bottom:16px}.section-number{border-radius:5px;background:#163b42;color:#4fe1d0;padding:3px 7px;font-size:10px;font-weight:800}.control-section-title h3{font-size:13px;margin:0;font-weight:730}.controls-list{display:flex;flex-direction:column;gap:16px}.control-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}.control-head label{color:#b2c2d5;font-weight:590;font-size:11px}.control-value{font-weight:740;font-size:12px;color:#65e8dc;font-variant-numeric:tabular-nums;white-space:nowrap}.range-control input[type=range]{width:100%;margin:0;cursor:pointer;accent-color:#4bdccd;background:transparent;height:15px}.range-bounds{display:flex;justify-content:space-between;color:#5e7690;font-size:10px}.check-row{display:flex;align-items:center;gap:9px;font-size:11px;color:#b0c0d1;margin-top:16px;cursor:pointer}.check-row input{accent-color:#46cfc3;cursor:pointer}.control-help{font-size:10px;color:#678aa1;padding:5px 0 0 24px;line-height:1.6}.metrics-panel{padding:22px}.metrics-panel h2{margin-bottom:21px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{border:1px solid #2b4054;background:#102438aa;border-radius:8px;padding:13px;min-width:0}.metric label{display:block;color:#809bb4;font-size:10px;margin-bottom:4px}.metric strong{font-weight:720;font-size:24px;letter-spacing:-.045em;color:#f4f7fe;font-variant-numeric:tabular-nums}.metric strong small{font-size:13px;color:#7b91a6;margin-left:2px}.metric:nth-child(3) strong{color:var(--teal)}.metric-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:17px;font-size:10px;color:#8199af}.metric-footer b{color:#d1e2ed}.footer-side{color:#456079;font-size:10px;letter-spacing:.08em;line-height:1.9;padding:0 12px}.site-footer{margin:30px 0 0;border-top:1px solid #263347;display:flex;justify-content:space-between;gap:12px;color:#52687f;font-size:10px;padding:22px 0 30px}.toast{position:fixed;z-index:100;bottom:20px;left:50%;transform:translate(-50%,25px);pointer-events:none;opacity:0;background:#1c3c46;border:1px solid #36756c;color:#d6fffb;border-radius:9px;padding:12px 20px;box-shadow:0 10px 38px #0009;transition:.2s}.toast.visible{transform:translate(-50%,0);opacity:1}@media(max-width:1160px){.workspace{grid-template-columns:minmax(0,1.4fr) minmax(315px,.9fr)}.panel-info{display:none}.sky-wrap{height:350px}.chart-wrap{height:290px}}@media(max-width:870px){.app-shell{padding:0 17px}.workspace{grid-template-columns:1fr}.controls-column{display:grid;grid-template-columns:1.2fr 1fr;align-items:start}.controls-column .footer-side{display:none}.page-heading{padding:35px 0 25px}.sky-wrap{height:390px}}@media(max-width:640px){.masthead{min-height:71px}.live-text,.sim-dot{display:none}.brand strong{font-size:13px}.brand small{font-size:8px}.ghost-button{font-size:10px;padding:8px}.page-heading h1{font-size:28px}.page-heading p{font-size:12px}.presets{gap:6px}.presets-title{width:100%}.preset{font-size:11px;padding:8px 10px}.controls-column{display:flex}.panel-heading{padding:18px 17px 0}.panel-heading h2{font-size:16px}.sky-wrap{height:340px}.sky-overlay-left{top:15px;left:18px}.sky-overlay-right{right:12px;top:15px;font-size:9px}.sky-bottom{padding:11px 15px;font-size:10px}.sky-bottom #skyHint{display:none}.chart-header{display:block}.chart-actions{justify-content:flex-start;margin-top:13px}.chart-legend{padding:16px 17px 0;gap:8px;font-size:10px}.chart-wrap{height:290px}.scrub-row{margin:0 17px 10px}.transport{padding:12px 14px;gap:8px}.speed-area{gap:5px}.speed-area label{display:none}.notes-panel{font-size:10px}.site-footer{display:block}.site-footer span{display:block;margin-bottom:6px}}
+
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="masthead">
+      <div class="brand"><span class="brand-icon"><span></span></span><div><strong>MICROLENS<span class="brand-accent">/</span>STUDIO</strong><small>INTERACTIVE ASTROPHYSICS LAB</small></div></div>
+      <div class="header-controls"><span class="sim-dot"></span><span class="live-text">REAL-TIME SIMULATION</span><button id="shareBtn" class="ghost-button">상태 링크 복사 ↗</button></div>
+    </header>
+    <main>
+      <section class="page-heading">
+        <div class="eyebrow">GRAVITATIONAL MICROLENSING <span class="heading-line"></span> EARTH OBSERVER</div>
+        <h1>보이지 않는 행성이 <em>빛을 흔드는 순간.</em></h1>
+        <p>배경 항성의 이동, 행성의 공전, 중력렌즈와 천체 가림을 조절해 광도 곡선의 스파이크가 어떻게 형성되는지 직접 관찰하세요.</p>
+      </section>
+      <section class="presets" aria-label="시나리오 선택">
+        <span class="presets-title">EXPERIMENTS</span>
+        <button class="preset active" data-preset="spike">✦ 행성 스파이크</button>
+        <button class="preset" data-preset="single">◌ 단일 항성 렌즈</button>
+        <button class="preset" data-preset="orbit">⟳ 빠른 공전</button>
+        <button class="preset" data-preset="occult">◕ 항성·행성 가림</button>
+        <button class="preset" data-preset="caustic">◇ 강한 카우스틱</button>
+      </section>
+      <div class="workspace">
+        <div class="viz-column">
+          <section class="panel sky-panel">
+            <div class="panel-heading"><div><div class="kicker">01 / LENS PLANE</div><h2>하늘에서 본 천체 배치</h2><p>지구 관측 방향 · 각거리 단위 θ<sub>E</sub></p></div><div class="panel-info"><span class="tiny-legend"><i class="legend-source"></i>배경 항성</span><span class="tiny-legend"><i class="legend-lens"></i>렌즈 항성</span><span class="tiny-legend"><i class="legend-planet"></i>행성</span></div></div>
+            <div class="canvas-wrap sky-wrap"><canvas id="skyCanvas" aria-label="배경 항성 경로와 공전 중인 전경 렌즈 별 및 행성의 위치"></canvas><div class="sky-overlay sky-overlay-left"><span class="mini-label">현재 시각</span><strong id="currentDay">+0.0 <small>days</small></strong></div><div class="sky-overlay sky-overlay-right"><span>· · · &nbsp;Einstein ring</span><span>— &nbsp; Orbit projection</span><span>– – &nbsp;Source path</span></div></div>
+            <div class="sky-bottom"><span>배경 항성은 드래그해 충돌 파라미터 <b>u₀</b>를 조정할 수 있습니다.</span><span id="skyHint">이미지 위치는 수치 해석 결과</span></div>
+          </section>
+          <section class="panel chart-panel">
+            <div class="panel-heading chart-header"><div><div class="kicker">02 / PHOTOMETRY</div><h2>밝기–시간 광도 곡선</h2><p>배율 A(t) · 렌즈 항성과 행성 공전 및 가림 반영</p></div><div class="chart-actions"><label class="switch-label"><input id="logScale" type="checkbox" /><span class="switch-track"></span> 로그 축</label><button id="csvBtn" class="small-button">CSV ↓</button><button id="pngBtn" class="small-button">PNG ↓</button></div></div>
+            <div class="chart-legend"><span><i style="background:#8e94b4"></i>단일 렌즈 (비교)</span><span><i style="background:#43d8cb"></i>항성 + 행성 중력렌즈</span><span><i style="background:#f8bf72"></i>관측 광도 (가림·혼합 포함)</span></div>
+            <div class="chart-wrap"><canvas id="chartCanvas" aria-label="시간에 따른 배경 별 밝기와 렌즈 배율 그래프"></canvas><div id="chartTooltip" class="chart-tooltip" hidden></div></div>
+            <div class="scrub-row"><span id="scrubStart">−40 d</span><input type="range" id="timeScrub" min="-60" max="60" step="0.02" value="0" aria-label="관측 시각 이동"/><span id="scrubEnd">+40 d</span></div>
+            <div class="transport"><button id="playBtn" class="play-btn" aria-label="재생 또는 일시정지"><span id="playIcon">▶</span></button><button id="restartBtn" class="transport-icon" title="처음으로">↺</button><div class="transport-time"><span>관측 시간</span><b id="transportTime">+0.00 days</b></div><div class="speed-area"><label for="playSpeed">재생 속도</label><select id="playSpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></div></div>
+          </section>
+          <section class="notes-panel"><strong>물리 모형 안내</strong><p>항성+행성의 <b>이중 점질량 렌즈 방정식</b>을 수치적으로 풀고 이미지별 배율을 합산합니다. 단일 렌즈 비교선은 Paczyński 모형입니다. 배경 항성의 유한 크기는 저차 표본 적분으로 근사하며, 불투명한 렌즈 원반에 의해 가려진 영상은 감쇠됩니다. 행성이 전경 항성 앞을 지날 경우 항성 자체의 밝기도 감소합니다. 표시된 천체 크기는 시인성을 위해 확대되며, 일반적인 실제 렌즈 사건의 가림 효과는 극히 작습니다. 공전 기간과 궤도 반지름의 케플러 일관성은 설정에서 선택할 수 있습니다.</p></section>
+        </div>
+        <aside class="controls-column" aria-label="시뮬레이션 파라미터">
+          <section class="panel controls-panel">
+            <div class="controls-title"><div><div class="kicker">CONTROL CENTER</div><h2>시뮬레이션 설정</h2></div><button id="resetBtn" class="text-button">초기화 ↺</button></div>
+            <div class="control-section"><div class="control-section-title"><span class="section-number">01</span><h3>별의 상대 운동</h3></div><div id="motionControls" class="controls-list"></div></div>
+            <div class="control-section"><div class="control-section-title"><span class="section-number">02</span><h3>행성 질량 · 궤도</h3></div><div id="orbitControls" class="controls-list"></div><label class="check-row"><input type="checkbox" id="kepler"/><span>케플러 제3법칙으로 공전주기 자동계산</span></label><div id="orbitPeriodNote" class="control-help"></div></div>
+            <div class="control-section"><div class="control-section-title"><span class="section-number">03</span><h3>천체 차폐 · 광도</h3></div><div id="occultControls" class="controls-list"></div><label class="check-row"><input id="enableOccult" type="checkbox" checked/><span>항성/행성 불투명 차폐 적용</span></label></div>
+            <div class="control-section"><div class="control-section-title"><span class="section-number">04</span><h3>정밀도 · 시각화</h3></div><div id="qualityControls" class="controls-list"></div><label class="check-row"><input id="showImages" type="checkbox" checked/><span>중력렌즈 실제 영상점 표시</span></label></div>
+          </section>
+          <section class="panel metrics-panel"><div class="kicker">LIVE MEASUREMENTS</div><h2>실시간 측정</h2><div class="metric-grid"><div class="metric"><label>현재 관측 밝기</label><strong id="metricFlux">1.00<small>×</small></strong></div><div class="metric"><label>렌즈 광학 배율</label><strong id="metricMag">1.00<small>×</small></strong></div><div class="metric"><label>행성 이상 신호</label><strong id="metricAnomaly">+0.0<small>%</small></strong></div><div class="metric"><label>최대 관측 밝기</label><strong id="metricPeak">1.00<small>×</small></strong></div></div><div class="metric-footer"><span>아인슈타인 반지름 <b id="einsteinAU">2.21 AU</b></span><span>공전주기 <b id="periodDisplay">120 d</b></span></div></section>
+          <div class="footer-side">MICROLENS STUDIO / v1.0<br>Client-side physics · no account or server required</div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer"><span>© 2026 MICROLENS STUDIO</span><span>물리교육용 시뮬레이터 · 관측 데이터 또는 전문 추정 도구 아님</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+'use strict';
+/* MicroLens Studio — dependency-free educational binary gravitational lens laboratory.
+   Numerical roots are found in the 2D lens equation, then summed by inverse Jacobian.
+   The finite source, limb profile, and image occultation are deliberately approximate. */
+(() => {
+  const $ = id => document.getElementById(id);
+  const clamp = (x,a,b) => Math.max(a, Math.min(b,x));
+  const rad = Math.PI/180, PI2 = 2*Math.PI;
+  const BASE = Object.freeze({tE:22,u0:0.055,angle:0,qLog:-2.0,s:1.25,phase:0,incl:55,period:800,kepler:false,rhoLog:-2.0,starRLog:-2.6,planetRLog:-3.6,blend:0.15,opacity:100,enableOccult:true,noPlanet:false,quality:380,showImages:true,logScale:false,speed:1});
+  const PRESETS = {
+    spike: {...BASE},
+    single:{...BASE,noPlanet:true,qLog:-5,u0:0.12,s:1.6,rhoLog:-1.9,period:750,blend:0.05},
+    orbit:{...BASE,tE:19,u0:0.04,qLog:-1.75,s:1.14,phase:20,incl:42,period:48,rhoLog:-2.12},
+    occult:{...BASE,tE:18,u0:0.045,qLog:-2.1,s:0.83,phase:90,incl:89,period:125,starRLog:-0.79,planetRLog:-1.12,blend:1.45,opacity:100},
+    caustic:{...BASE,tE:18,u0:0.005,qLog:-1.25,s:1.015,phase:0,incl:8,period:950,rhoLog:-2.48,blend:0.06}
+  };
+  let state = {...BASE};
+  let currentT = 0;
+  let playing = false, lastFrame = 0, pendingRecompute = 0, data = [], cachePeak = 1, cachedCurrent = null, cachedCurrentT = NaN;
+  let hoverT = null, dragSky = false, currentPreset = 'spike', toastTimeout = 0, lastPhysicsTime=0;
+  const controls = [
+    {section:'motionControls',key:'tE',title:'아인슈타인 통과 시간 tE',min:5,max:75,step:0.5,unit:'일',dp:1},
+    {section:'motionControls',key:'u0',title:'최단 거리 u₀',min:-0.75,max:0.75,step:0.005,unit:'θE',dp:3},
+    {section:'motionControls',key:'angle',title:'배경 항성 이동 방향',min:-90,max:90,step:1,unit:'°',dp:0},
+    {section:'orbitControls',key:'qLog',title:'행성/항성 질량비 q · log₁₀',min:-5,max:-0.8,step:0.05,format:x=>`10^${x.toFixed(2)}`},
+    {section:'orbitControls',key:'s',title:'행성 궤도 반지름 s',min:0.4,max:2,step:0.01,unit:'θE',dp:2},
+    {section:'orbitControls',key:'phase',title:'현재 공전 위상',min:0,max:360,step:1,unit:'°',dp:0},
+    {section:'orbitControls',key:'incl',title:'궤도 경사각 (90°=측면)',min:0,max:90,step:1,unit:'°',dp:0},
+    {section:'orbitControls',key:'period',title:'행성 공전주기',min:20,max:1400,step:5,unit:'일',dp:0},
+    {section:'occultControls',key:'rhoLog',title:'배경 항성 각반지름 ρ · log₁₀',min:-3.5,max:-0.8,step:0.05,format:x=>`${(10**x).toFixed(4)} θE`},
+    {section:'occultControls',key:'starRLog',title:'전경 항성 반지름 · log₁₀',min:-4,max:-0.45,step:0.05,format:x=>`${(10**x).toFixed(4)} θE`},
+    {section:'occultControls',key:'planetRLog',title:'행성 반지름 · log₁₀',min:-5,max:-0.9,step:0.05,format:x=>`${(10**x).toFixed(5)} θE`},
+    {section:'occultControls',key:'blend',title:'렌즈 항성 광도 / 배경 항성',min:0,max:3,step:0.05,unit:'×',dp:2},
+    {section:'occultControls',key:'opacity',title:'천체 불투명도',min:0,max:100,step:1,unit:'%',dp:0},
+    {section:'qualityControls',key:'quality',title:'광도곡선 표본 수',min:180,max:720,step:60,unit:'점',dp:0}
+  ];
+  const form = {};
+  function buildControls(){
+    for(const c of controls){
+      const root=document.createElement('div');root.className='range-control';
+      const id=`control-${c.key}`;
+      root.innerHTML=`<div class="control-head"><label for="${id}">${c.title}</label><span id="value-${c.key}" class="control-value"></span></div><input id="${id}" type="range" min="${c.min}" max="${c.max}" step="${c.step}"><div class="range-bounds"><span>${c.min}</span><span>${c.max}</span></div>`;
+      $(c.section).appendChild(root);const input=root.querySelector('input');form[c.key]=input;
+      input.addEventListener('input',()=>{
+        state[c.key]=+input.value;cachedCurrentT=NaN;markCustom();
+        if(c.key==='period')state.kepler=false;
+        if(c.key==='qLog')state.noPlanet=false;
+        if(c.key==='tE')setTimelineBounds();
+        refreshControls();updateAt(currentT);scheduleCompute();
+      });
+    }
+  }
+  function fmt(x,n=2){return Number.isFinite(x)?Number(x).toFixed(n):'—'}
+  function numAbbr(x){if(!Number.isFinite(x))return '—';if(x>=1000)return x.toExponential(1);return x>=100?x.toFixed(0):x>=10?x.toFixed(1):x.toFixed(2)}
+  function refreshControls(){
+    for(const c of controls){
+      const inp=form[c.key];inp.value=state[c.key];
+      $('value-'+c.key).textContent=c.format?c.format(state[c.key]):`${fmt(state[c.key],c.dp)} ${c.unit||''}`;
+    }
+    form.period.disabled=state.kepler;
+    $('kepler').checked=state.kepler;
+    $('enableOccult').checked=state.enableOccult;
+    $('showImages').checked=state.showImages;
+    $('logScale').checked=state.logScale;
+    $('playSpeed').value=String(state.speed);
+    const p=periodOf(state); $('periodDisplay').textContent=`${fmt(p,1)} d`;
+    $('einsteinAU').textContent=`${fmt(einsteinAU(),2)} AU`;
+    $('orbitPeriodNote').textContent=state.kepler?`렌즈 항성 0.3 M☉ · D_L=4 kpc · D_S=8 kpc · 예측 ${fmt(p,1)}일`:'교육용 수동 공전주기 · 실제 물리 궤도와 다를 수 있음';
+  }
+  function markCustom(){currentPreset='';document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'))}
+  function toast(message){const el=$('toast');el.textContent=message;el.classList.add('visible');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>el.classList.remove('visible'),2500)}
+  function einsteinAU(){
+    const G=6.67430e-11, M=0.3*1.98847e30, c=299792458, kpc=3.085677581491367e19, AU=1.495978707e11;
+    const dl=4*kpc, ds=8*kpc;
+    return Math.sqrt((4*G*M/(c*c))*dl*(ds-dl)/ds)/AU;
+  }
+  function periodOf(s){return s.kepler?365.25*Math.sqrt(Math.pow(s.s*einsteinAU(),3)/(0.3*(1+10**s.qLog))):s.period}
+  function timeSpan(s){return s.tE*2.05}
+  function geo(t,s){
+    const q=s.noPlanet?0:10**s.qLog, m1=1/(1+q),m2=q/(1+q);
+    const phi=s.phase*rad+PI2*t/periodOf(s), tilt=Math.cos(s.incl*rad);
+    const px=s.s*Math.cos(phi),py=s.s*Math.sin(phi)*tilt,pz=s.s*Math.sin(phi)*Math.sin(s.incl*rad);
+    return {planetX:px*m1,planetY:py*m1,starX:-px*m2,starY:-py*m2,pz,m1,m2};
+  }
+  function sourceAt(t,s){const a=s.angle*rad,z=t/s.tE;return {x:z*Math.cos(a)-s.u0*Math.sin(a),y:z*Math.sin(a)+s.u0*Math.cos(a)}}
+  function pointAmp(u){u=Math.max(u,1e-9);return (u*u+2)/(u*Math.sqrt(u*u+4))}
+  function singleAmp(u,rho){
+    if(u>rho*4.5)return pointAmp(u);
+    let sum=0;
+    for(let ring=0;ring<2;ring++){
+      const r=rho*(ring===0?.35:.82);
+      for(let j=0;j<8;j++){
+        const a=PI2*(j+.31*(ring+1))/8;
+        sum+=pointAmp(Math.hypot(u+r*Math.cos(a),r*Math.sin(a)));
+      }
+    }
+    return sum/16;
+  }
+  function circleOverlap(a,b,d){
+    if(a<=0||b<=0)return 0;
+    if(d>=a+b)return 0;
+    if(d<=Math.abs(a-b))return Math.PI*Math.min(a,b)**2;
+    const x=clamp((d*d+a*a-b*b)/(2*d*a),-1,1);
+    const y=clamp((d*d+b*b-a*a)/(2*d*b),-1,1);
+    const area=a*a*Math.acos(x)+b*b*Math.acos(y)-.5*Math.sqrt(Math.max(0,(-d+a+b)*(d+a-b)*(d-a+b)*(d+a+b)));
+    return area;
+  }
+  // Derivative of x - Σ m (x − x_i)/|x − x_i|²; determinant changes sign on critical curves.
+  function lensEq(x,y,g,bx,by){
+    let fx=x-bx,fy=y-by,Jxx=1,Jxy=0,Jyy=1;
+    for(let k=0;k<2;k++){
+      const mx=k===0?g.m1:g.m2;
+      const dx=x-(k===0?g.starX:g.planetX),dy=y-(k===0?g.starY:g.planetY);
+      const r2=Math.max(1e-16,dx*dx+dy*dy),a=mx/r2,d=mx/(r2*r2);
+      fx-=a*dx;fy-=a*dy;
+      Jxx+=d*(dx*dx-dy*dy);Jyy+=d*(dy*dy-dx*dx);Jxy+=2*d*dx*dy;
+    }
+    return {fx,fy,Jxx,Jyy,Jxy,det:Jxx*Jyy-Jxy*Jxy};
+  }
+  function imagesAt(bx,by,g){
+    const roots=[];
+    const seeds=[];
+    const x=bx-g.starX,y=by-g.starY,u=Math.max(1e-9,Math.hypot(x,y));
+    const rr=Math.sqrt(u*u+4*g.m1);
+    for(const k of [(u+rr)*.5,(u-rr)*.5])seeds.push([g.starX+x/u*k,g.starY+y/u*k]);
+    seeds.push([bx,by],[g.starX,g.starY],[g.planetX,g.planetY]);
+    // Singularly perturbed third image of a binary lens can sit much closer to
+    // the planet than sqrt(q). Seed it from the local one-body asymptotics.
+    if(g.m2>0){
+      const sx=g.planetX-g.starX,sy=g.planetY-g.starY,d2=Math.max(1e-8,sx*sx+sy*sy);
+      const cx=g.planetX-g.m1*sx/d2,cy=g.planetY-g.m1*sy/d2;
+      const rx=bx-cx,ry=by-cy,r2=rx*rx+ry*ry;
+      if(r2>1e-9){
+        const qscale=g.m2/r2,px=g.planetX-qscale*rx,py=g.planetY-qscale*ry;
+        seeds.push([px,py]);
+        for(const k of [-.1,.1]){seeds.push([px+k*Math.sqrt(g.m2),py],[px,py+k*Math.sqrt(g.m2)])}
+      }
+    }
+    for(const [lx,ly,rs] of [[g.starX,g.starY,[.2,.93]],[g.planetX,g.planetY,[Math.sqrt(g.m2)*.8,Math.sqrt(g.m2)*2.5,.08]]]){
+      for(const r of rs)for(let j=0;j<8;j++){
+        const a=PI2*(j+.19)/8;seeds.push([lx+r*Math.cos(a),ly+r*Math.sin(a)]);
+      }
+    }
+    for(const xx of [-1.4,0,1.4])for(const yy of [-1.4,0,1.4])seeds.push([xx,yy]);
+    for(const seed of seeds){
+      let xx=seed[0],yy=seed[1],found=false;
+      for(let i=0;i<32;i++){
+        const r=lensEq(xx,yy,g,bx,by);
+        const err=r.fx*r.fx+r.fy*r.fy;
+        if(err<2e-13){found=true;break}
+        if(Math.abs(r.det)<1e-11)break;
+        let dx=(r.Jyy*r.fx-r.Jxy*r.fy)/r.det;
+        let dy=(r.Jxx*r.fy-r.Jxy*r.fx)/r.det;
+        const length=Math.hypot(dx,dy);
+        if(length>1.15){dx*=1.15/length;dy*=1.15/length}
+        // Backtracking is useful for seeds near both critical curves.
+        let factor=1,nx=xx-dx,ny=yy-dy;
+        if(i>3){
+          let newEq=lensEq(nx,ny,g,bx,by);
+          for(let j=0;j<3&&newEq.fx*newEq.fx+newEq.fy*newEq.fy>err*1.3;j++){
+            factor*=.5;nx=xx-dx*factor;ny=yy-dy*factor;newEq=lensEq(nx,ny,g,bx,by)
+          }
+        }
+        xx=nx; yy=ny;
+        if(Math.abs(xx)>30||Math.abs(yy)>30)break;
+      }
+      if(!found)continue;
+      let duplicate=false;
+      for(const r of roots)if((xx-r.x)**2+(yy-r.y)**2<4e-8){duplicate=true;break}
+      if(duplicate)continue;
+      const determinant=lensEq(xx,yy,g,bx,by).det;
+      roots.push({x:xx,y:yy,mu:Math.min(1e5,1/Math.max(1e-9,Math.abs(determinant))),parity:Math.sign(determinant)});
+      if(roots.length===5)break;
+    }
+    return roots;
+  }
+  function imageMagnification(roots,g,s,cover){
+    let all=0,visible=0,occ=Math.max(0,s.opacity)/100;
+    const starR=10**s.starRLog,planetR=10**s.planetRLog;
+    for(const r of roots){
+      all+=r.mu;
+      let transmitted=1;
+      if(cover){
+        if(Math.hypot(r.x-g.starX,r.y-g.starY)<starR)transmitted*=1-occ;
+        if(g.pz>0 && Math.hypot(r.x-g.planetX,r.y-g.planetY)<planetR)transmitted*=1-occ;
+      }
+      visible+=r.mu*transmitted;
+    }
+    return {all,visible};
+  }
+  function calculate(t,s,withImages=false){
+    const g=geo(t,s), p=sourceAt(t,s),rho=10**s.rhoLog;
+    const hostDistance=Math.hypot(p.x-g.starX,p.y-g.starY);
+    const single=singleAmp(hostDistance,rho);
+    const roots=imagesAt(p.x,p.y,g);
+    let phot=imageMagnification(roots,g,s,s.enableOccult);
+    // Low-order finite-source disk integration around the strongest portion of the event.
+    const nearPlanet=roots.some(r=>Math.hypot(r.x-g.planetX,r.y-g.planetY)<.16+6*rho);
+    if(hostDistance<Math.max(.11,6*rho)||nearPlanet||phot.all>4.5){
+      let total=0,visible=0;
+      for(let j=0;j<6;j++){
+        const a=PI2*(j+.35)/6,r=rho*.69;
+        const local=imagesAt(p.x+r*Math.cos(a),p.y+r*Math.sin(a),g);
+        const m=imageMagnification(local,g,s,s.enableOccult);
+        total+=m.all;visible+=m.visible;
+      }
+      phot={all:total/6,visible:visible/6};
+    }
+    if(s.noPlanet){const ratio=phot.all>0?phot.visible/phot.all:1;phot={all:single,visible:single*ratio}}
+    const starR=10**s.starRLog,planetR=10**s.planetRLog;
+    const d=Math.hypot(g.planetX-g.starX,g.planetY-g.starY);
+    const starCover=!s.noPlanet&&s.enableOccult&&g.pz>0?circleOverlap(starR,planetR,d)/(Math.PI*starR*starR)*(s.opacity/100):0;
+    const flux=(phot.visible+s.blend*(1-starCover))/(1+s.blend);
+    const anomaly=(phot.all/Math.max(.001,single)-1)*100;
+    return {t,flux,planet:phot.all,single,anomaly,starCover,roots:withImages?roots:undefined,g,p};
+  }
+  function compileCurve(){
+    const st=performance.now(),n=state.quality,T=timeSpan(state),arr=[];
+    for(let i=0;i<=n;i++){
+      const t=-T+2*T*i/n;
+      arr.push(calculate(t,state,false));
+    }
+    data=arr;
+    cachePeak=Math.max(1,...arr.map(x=>x.flux));
+    lastPhysicsTime=performance.now()-st;
+    cachedCurrentT=NaN;
+    updateAt(currentT);
+    drawChart();
+    $('skyHint').textContent=`${n+1} samples · ${fmt(lastPhysicsTime,0)} ms`;
+  }
+  function scheduleCompute(){clearTimeout(pendingRecompute);pendingRecompute=setTimeout(compileCurve,85)}
+  function currentAt(t){
+    if(cachedCurrent&&cachedCurrentT===t)return cachedCurrent;
+    cachedCurrent=calculate(t,state,true);cachedCurrentT=t;return cachedCurrent;
+  }
+  function updateAt(t){
+    const T=timeSpan(state);currentT=clamp(t,-T,T);
+    const result=currentAt(currentT);
+    $('currentDay').innerHTML=`${currentT>=0?'+':''}${fmt(currentT,1)} <small>days</small>`;
+    $('transportTime').textContent=`${currentT>=0?'+':''}${fmt(currentT,2)} days`;
+    $('timeScrub').value=currentT;
+    $('metricFlux').innerHTML=`${numAbbr(result.flux)}<small>×</small>`;
+    $('metricMag').innerHTML=`${numAbbr(result.planet)}<small>×</small>`;
+    $('metricAnomaly').innerHTML=`${result.anomaly>0?'+':''}${Math.abs(result.anomaly)>1000?result.anomaly.toFixed(0):fmt(result.anomaly,1)}<small>%</small>`;
+    $('metricPeak').innerHTML=`${numAbbr(cachePeak)}<small>×</small>`;
+    drawSky(result);drawChart();
+  }
+  function canvasCtx(canvas){
+    const r=canvas.getBoundingClientRect(),w=Math.max(10,r.width),h=Math.max(10,r.height),d=Math.min(2,window.devicePixelRatio||1);
+    const W=Math.round(w*d),H=Math.round(h*d);
+    if(canvas.width!==W||canvas.height!==H){canvas.width=W;canvas.height=H}
+    const ctx=canvas.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);return {ctx,w,h};
+  }
+  function line(ctx,x1,y1,x2,y2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+  function starfield(ctx,w,h){
+    let seed=4912;const rand=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};
+    for(let i=0;i<100;i++){
+      const x=rand()*w,y=rand()*h,a=rand()*.28+.05,r=rand()*1.1+.25;
+      ctx.fillStyle=`rgba(185,221,255,${a})`;ctx.beginPath();ctx.arc(x,y,r,0,PI2);ctx.fill();
+    }
+  }
+  function glow(ctx,x,y,r,color,halo){
+    const grd=ctx.createRadialGradient(x,y,1,x,y,halo);grd.addColorStop(0,color);grd.addColorStop(.22,color+'c9');grd.addColorStop(1,color+'00');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(x,y,halo,0,PI2);ctx.fill();
+    ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,PI2);ctx.fill();
+  }
+  function drawSky(res){
+    const canvas=$('skyCanvas'),{ctx,w,h}=canvasCtx(canvas);
+    const grad=ctx.createRadialGradient(w*.52,h*.55,10,w*.52,h*.55,w*.6);
+    grad.addColorStop(0,'#132944');grad.addColorStop(.7,'#0a1a2c');grad.addColorStop(1,'#0a1626');ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+    starfield(ctx,w,h);
+    const ox=w*.49,oy=h*.55,unit=Math.min(w/5.35,h/4.55),px=x=>ox+x*unit,py=y=>oy-y*unit;
+    ctx.strokeStyle='#4b617a24';ctx.lineWidth=.7;
+    for(let v=-3;v<=3;v+=.5){line(ctx,px(v),0,px(v),h);line(ctx,0,py(v),w,py(v))}
+    ctx.strokeStyle='#8db3c742';ctx.lineWidth=1.1;ctx.setLineDash([3,7]);ctx.beginPath();ctx.arc(px(0),py(0),unit,0,PI2);ctx.stroke();ctx.setLineDash([]);
+    // Orbit projection in the plane of the sky.
+    ctx.strokeStyle='#429d9677';ctx.lineWidth=1.5;ctx.beginPath();
+    for(let j=0;j<=120;j++){
+      const a=PI2*j/120,x=state.s*Math.cos(a),y=state.s*Math.sin(a)*Math.cos(state.incl*rad);
+      j?ctx.lineTo(px(x),py(y)):ctx.moveTo(px(x),py(y))
+    }
+    ctx.stroke();
+    // Background source trajectory.
+    const T=timeSpan(state),p1=sourceAt(-T,state),p2=sourceAt(T,state);
+    ctx.setLineDash([5,7]);ctx.lineWidth=1.4;ctx.strokeStyle='#9baed760';line(ctx,px(p1.x),py(p1.y),px(p2.x),py(p2.y));ctx.setLineDash([]);
+    const {g,p,roots}=res;
+    if(state.showImages&&roots){
+      for(const r of roots){
+        const rr=clamp(Math.sqrt(Math.max(0,r.mu))*1.7,2.5,9);
+        ctx.strokeStyle=r.parity>0?'#97e0ffbf':'#c6a9f3a0';ctx.lineWidth=1.3;
+        ctx.beginPath();ctx.arc(px(r.x),py(r.y),rr+3,0,PI2);ctx.stroke();
+        ctx.fillStyle=r.parity>0?'#c5edff':'#c8b3ed';ctx.beginPath();ctx.arc(px(r.x),py(r.y),rr*.55,0,PI2);ctx.fill();
+      }
+    }
+    const sr=10**state.starRLog,pr=10**state.planetRLog,br=10**state.rhoLog;
+    glow(ctx,px(g.starX),py(g.starY),clamp(sr*unit,6,19),'#ffd18e',27);
+    if(!state.noPlanet)glow(ctx,px(g.planetX),py(g.planetY),clamp(pr*unit,3.5,11),'#49e0d2',18);
+    glow(ctx,px(p.x),py(p.y),clamp(br*unit,5,13),'#d5d9ff',21);
+    ctx.font='11px system-ui,sans-serif';ctx.fillStyle='#b4c6da';
+    function label(text,x,y,dx,dy){ctx.fillText(text,clamp(px(x)+dx,8,w-110),clamp(py(y)+dy,14,h-10))}
+    label('렌즈 항성',g.starX,g.starY,12,-15);if(!state.noPlanet)label('행성',g.planetX,g.planetY,13,16);label('배경 항성',p.x,p.y,13,-12);
+    ctx.fillStyle='#778ea6';ctx.font='10px system-ui,sans-serif';ctx.fillText('θE  ×1',w-77,h-23);
+    ctx.strokeStyle='#8cb3c6';ctx.lineWidth=1.2;line(ctx,w-78,h-31,w-78+unit,h-31);
+    canvas._skyView={ox,oy,unit};
+  }
+  function graphBounds(){
+    const w=$('chartCanvas').getBoundingClientRect().width;
+    const h=$('chartCanvas').getBoundingClientRect().height;
+    return {left:w<450?48:64,top:17,right:w-20,bottom:h-42,w,h};
+  }
+  function chartScale(){
+    const vals=[];
+    for(const d of data){vals.push(d.single,d.planet,d.flux)}
+    const max=Math.min(150,Math.max(1.3,1.12*Math.max(1,...vals)));
+    const min=Math.max(.01,Math.min(.92,.92*Math.min(1,...vals)));
+    return {min,max};
+  }
+  function chartInterp(t){
+    if(!data.length)return null;
+    const T=timeSpan(state),f=clamp((t+T)/(2*T)*(data.length-1),0,data.length-1),i=Math.min(data.length-2,Math.floor(f)),a=f-i;
+    const d0=data[i],d1=data[i+1];return {t,flux:d0.flux+(d1.flux-d0.flux)*a,single:d0.single+(d1.single-d0.single)*a,planet:d0.planet+(d1.planet-d0.planet)*a,anomaly:d0.anomaly+(d1.anomaly-d0.anomaly)*a}
+  }
+  function drawChart(){
+    if(!data.length)return;
+    const canvas=$('chartCanvas'),{ctx,w,h}=canvasCtx(canvas),b=graphBounds();
+    const s=chartScale(),T=timeSpan(state),plotH=b.bottom-b.top,plotW=b.right-b.left;
+    const isLog=state.logScale;
+    const yy = value => {
+      const y=clamp(value,s.min,s.max);
+      const frac=isLog?(Math.log(y)-Math.log(s.min))/(Math.log(s.max)-Math.log(s.min)):(y-s.min)/(s.max-s.min);
+      return b.bottom-frac*plotH;
+    };
+    const xx=t=>b.left+(t+T)/(2*T)*plotW;
+    ctx.fillStyle='#0e1b2c';ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='#2d435851';ctx.lineWidth=1;ctx.font='10px system-ui,sans-serif';ctx.fillStyle='#7e96ad';
+    const ticks=isLog?[.05,.1,.2,.5,1,2,5,10,20,50,100,150].filter(t=>t>=s.min&&t<=s.max):Array.from({length:6},(_,i)=>s.min+(s.max-s.min)*i/5);
+    ctx.textAlign='right';for(const v of ticks){const y=yy(v);line(ctx,b.left,y,b.right,y);ctx.fillText(v<10?fmt(v,v<1?2:1):fmt(v,0),b.left-10,y+4)}
+    ctx.textAlign='center';for(let k=0;k<=6;k++){const t=-T+2*T*k/6,x=xx(t);line(ctx,x,b.top,x,b.bottom);ctx.fillText(`${t>0?'+':''}${fmt(t,0)}`,x,h-22)}
+    ctx.fillStyle='#94a9c0';ctx.font='10px system-ui,sans-serif';ctx.fillText('시간 t (일)',(b.left+b.right)/2,h-5);
+    ctx.save();ctx.translate(13,(b.top+b.bottom)/2);ctx.rotate(-Math.PI/2);ctx.fillText(isLog?'밝기 (로그 눈금)':'정규화 밝기 (배)',0,0);ctx.restore();
+    // Reference baseline at F=1.
+    if(s.min<=1&&s.max>=1){ctx.strokeStyle='#8196a947';ctx.setLineDash([3,4]);line(ctx,b.left,yy(1),b.right,yy(1));ctx.setLineDash([])}
+    function curve(key,color,width,dash){
+      ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash(dash||[]);
+      ctx.beginPath();for(let i=0;i<data.length;i++){
+        const d=data[i],x=xx(d.t),y=yy(d[key]);i?ctx.lineTo(x,y):ctx.moveTo(x,y)
+      }ctx.stroke();ctx.setLineDash([]);
+    }
+    curve('single','#959bbd91',1.5,[5,4]);curve('planet','#43d8cb',1.7);curve('flux','#f8bf72',1.85);
+    const cursorX=xx(currentT);
+    ctx.strokeStyle='#d0e7ff88';ctx.setLineDash([3,4]);ctx.lineWidth=1;line(ctx,cursorX,b.top,cursorX,b.bottom);ctx.setLineDash([]);
+    const cursor=chartInterp(currentT);
+    if(cursor){for(const [key,color] of [['single','#9b9fbe'],['planet','#49dace'],['flux','#ffd19a']]){
+      ctx.fillStyle=color;ctx.strokeStyle='#0d1d2f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cursorX,yy(cursor[key]),3.6,0,PI2);ctx.fill();ctx.stroke()
+    }}
+    if(hoverT!==null){const hx=xx(hoverT);ctx.strokeStyle='#eef2ff6e';ctx.lineWidth=1;line(ctx,hx,b.top,hx,b.bottom)}
+    canvas._plot={b,s,T};
+  }
+  function setTimelineBounds(){const T=timeSpan(state);$('timeScrub').min=-T;$('timeScrub').max=T;$('timeScrub').step=Math.max(.002,T/2500);$('scrubStart').textContent=`−${fmt(T,0)} d`;$('scrubEnd').textContent=`+${fmt(T,0)} d`;currentT=clamp(currentT,-T,T)}
+  function setState(next,preset=''){
+    playing=false;setPlayIcon();state={...BASE,...next};currentPreset=preset;
+    document.querySelectorAll('.preset').forEach(x=>x.classList.toggle('active',x.dataset.preset===preset));
+    refreshControls();setTimelineBounds();compileCurve();
+  }
+  function setPlayIcon(){$('playIcon').textContent=playing?'Ⅱ':'▶'}
+  function animate(timestamp){
+    if(!lastFrame)lastFrame=timestamp;
+    const dt=Math.min(.09,(timestamp-lastFrame)/1000);lastFrame=timestamp;
+    if(playing){
+      const dtDays=dt*state.speed*(timeSpan(state)*2)/15;
+      const T=timeSpan(state);let t=currentT+dtDays;if(t>T)t=-T+(t-T);
+      updateAt(t)
+    }
+    requestAnimationFrame(animate);
+  }
+  function setup(){
+    buildControls();
+    document.querySelectorAll('.preset').forEach(x=>x.addEventListener('click',()=>setState(PRESETS[x.dataset.preset],x.dataset.preset)));
+    $('kepler').addEventListener('change',e=>{state.kepler=e.target.checked;cachedCurrentT=NaN;markCustom();refreshControls();updateAt(currentT);scheduleCompute()});
+    $('enableOccult').addEventListener('change',e=>{state.enableOccult=e.target.checked;cachedCurrentT=NaN;markCustom();updateAt(currentT);scheduleCompute()});
+    $('showImages').addEventListener('change',e=>{state.showImages=e.target.checked;drawSky(currentAt(currentT))});
+    $('logScale').addEventListener('change',e=>{state.logScale=e.target.checked;drawChart()});
+    $('playSpeed').addEventListener('change',e=>{state.speed=+e.target.value});
+    $('playBtn').addEventListener('click',()=>{playing=!playing;setPlayIcon()});
+    $('restartBtn').addEventListener('click',()=>{playing=false;setPlayIcon();updateAt(-timeSpan(state))});
+    $('resetBtn').addEventListener('click',()=>{setState(PRESETS.spike,'spike');updateAt(0);toast('시뮬레이션을 초기화했습니다.')});
+    $('timeScrub').addEventListener('input',e=>{playing=false;setPlayIcon();updateAt(+e.target.value)});
+    const chart=$('chartCanvas');
+    chart.addEventListener('pointermove',e=>{
+      if(!chart._plot)return;
+      const rect=chart.getBoundingClientRect(),x=e.clientX-rect.left,b=chart._plot.b;
+      if(x<b.left||x>b.right){$('chartTooltip').hidden=true;hoverT=null;drawChart();return}
+      hoverT=(x-b.left)/(b.right-b.left)*timeSpan(state)*2-timeSpan(state);
+      const d=chartInterp(hoverT);if(!d)return;
+      const tooltip=$('chartTooltip');tooltip.hidden=false;
+      tooltip.innerHTML=`<b>${hoverT>=0?'+':''}${fmt(hoverT,2)}일</b><br>단일 렌즈 ${numAbbr(d.single)}×<br>행성 렌즈 ${numAbbr(d.planet)}×<br>관측 광도 ${numAbbr(d.flux)}×`;
+      const left=clamp(x+12,6,rect.width-140),top=clamp(e.clientY-rect.top-30,5,rect.height-100);
+      tooltip.style.left=`${left}px`;tooltip.style.top=`${top}px`;drawChart();
+    });
+    chart.addEventListener('pointerleave',()=>{hoverT=null;$('chartTooltip').hidden=true;drawChart()});
+    chart.addEventListener('click',e=>{const rect=chart.getBoundingClientRect(),b=chart._plot?.b;if(!b)return;const x=e.clientX-rect.left;if(x>=b.left&&x<=b.right){playing=false;setPlayIcon();updateAt((x-b.left)/(b.right-b.left)*timeSpan(state)*2-timeSpan(state))}});
+    const sky=$('skyCanvas');
+    sky.addEventListener('pointerdown',e=>{
+      const res=currentAt(currentT),v=sky._skyView;if(!v)return;
+      const rect=sky.getBoundingClientRect(),sx=v.ox+res.p.x*v.unit,sy=v.oy-res.p.y*v.unit;
+      if(Math.hypot(e.clientX-rect.left-sx,e.clientY-rect.top-sy)<42){dragSky=true;playing=false;setPlayIcon();sky.setPointerCapture(e.pointerId)}
+    });
+    sky.addEventListener('pointermove',e=>{
+      if(!dragSky)return;
+      const v=sky._skyView,rect=sky.getBoundingClientRect(),worldX=(e.clientX-rect.left-v.ox)/v.unit,worldY=(v.oy-(e.clientY-rect.top))/v.unit;
+      const a=state.angle*rad;state.u0=clamp(-worldX*Math.sin(a)+worldY*Math.cos(a),-.75,.75);cachedCurrentT=NaN;
+      markCustom();refreshControls();updateAt(currentT);scheduleCompute();
+    });
+    for(const n of ['pointerup','pointercancel'])sky.addEventListener(n,()=>dragSky=false);
+    $('csvBtn').addEventListener('click',()=>{
+      const rows=['time_days,single_lens_magnification,binary_lens_magnification,observed_normalized_flux,planetary_anomaly_percent',...data.map(d=>[d.t,d.single,d.planet,d.flux,d.anomaly].map(n=>Number(n).toPrecision(9)).join(','))];
+      downloadBlob(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'}),'microlensing-lightcurve.csv');toast('CSV 광도곡선을 저장했습니다.');
+    });
+    $('pngBtn').addEventListener('click',()=>{const c=$('chartCanvas');c.toBlob(b=>{if(b){downloadBlob(b,'microlensing-lightcurve.png');toast('그래프 PNG를 저장했습니다.')}},'image/png')});
+    $('shareBtn').addEventListener('click',async()=>{
+      const stateUri=location.href.split('#')[0]+'#s='+encodeURIComponent(JSON.stringify(state));
+      try{await navigator.clipboard.writeText(stateUri);toast('현재 설정을 담은 링크를 복사했습니다.')}catch(e){
+        const t=document.createElement('textarea');t.value=stateUri;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();toast(ok?'링크가 복사되었습니다.':'복사 권한이 필요합니다.')
+      }
+    });
+    const redraw=()=>{drawSky(currentAt(currentT));drawChart()};
+    if('ResizeObserver'in window){new ResizeObserver(redraw).observe($('skyCanvas'));new ResizeObserver(redraw).observe($('chartCanvas'))}else window.addEventListener('resize',redraw);
+    let start=BASE;
+    try{if(location.hash.startsWith('#s=')){
+      const p=JSON.parse(decodeURIComponent(location.hash.slice(3)));
+      if(typeof p==='object'&&p){
+        const safe={...BASE};if(typeof p.noPlanet==='boolean')safe.noPlanet=p.noPlanet;for(const c of controls)if(Number.isFinite(p[c.key]))safe[c.key]=clamp(p[c.key],c.min,c.max);
+        for(const k of ['kepler','enableOccult','showImages','logScale'])if(typeof p[k]==='boolean')safe[k]=p[k];
+        if([.5,1,2,4,8].includes(p.speed))safe.speed=p.speed;
+        start=safe;
+      }
+    }}catch(e){/* Invalid sharable state is ignored */}
+    setState(start,start===BASE?'spike':'');updateAt(0);requestAnimationFrame(animate);
+  }
+  function downloadBlob(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)}
+  // Expose pure functions solely for reproducibility/testing; not required by UI.
+  window.MicroLensPhysics={geo,sourceAt,pointAmp,singleAmp,imagesAt,calculate,periodOf,einsteinAU,PRESETS};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+
+</script>
+</body>
+</html>
